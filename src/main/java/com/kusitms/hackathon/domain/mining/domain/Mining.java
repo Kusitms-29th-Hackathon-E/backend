@@ -12,7 +12,7 @@ import java.util.List;
 public class Mining {
     private Long id;
     private LocalDate createdDate;
-    private String thumbnailUrl;
+    private String platformUrl;
     private String title;
     private String question;
     private String response;
