@@ -1,5 +1,6 @@
 package com.kusitms.hackathon.domain.mining.application.service;
 
+import com.kusitms.hackathon.domain.mining.application.dto.MiningDescriptionRequest;
 import com.kusitms.hackathon.domain.mining.application.dto.PlatformDetailsResponse;
 import com.kusitms.hackathon.domain.mining.domain.Mining;
 import com.kusitms.hackathon.domain.mining.domain.Tag;
@@ -10,11 +11,11 @@ import com.kusitms.hackathon.domain.mining.domain.question.QuestionGenerator;
 import com.kusitms.hackathon.domain.mining.domain.question.QuestionRequest;
 import com.kusitms.hackathon.domain.mining.domain.question.QuestionResult;
 import com.kusitms.hackathon.domain.mining.domain.service.MiningAppender;
+import com.kusitms.hackathon.domain.mining.domain.service.MiningModifier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.beans.Transient;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -25,6 +26,7 @@ public class MiningService {
     private final MiningAppender miningAppender;
     private final PlatformVideoInfoExtractor platformVideoInfoExtractor;
     private final QuestionGenerator questionGenerator;
+    private final MiningModifier miningModifier;
 
     @Transactional
     public PlatformDetailsResponse createMining(String platformUrl) {
@@ -39,6 +41,11 @@ public class MiningService {
         final Mining mining = createMining(extract, questionResult);
         Long miningId = miningAppender.appendMiningAndGetId(mining);
         return new PlatformDetailsResponse(questionResult.question(), miningId);
+    }
+
+    @Transactional
+    public void updateMining(MiningDescriptionRequest request, Long miningId){
+        miningModifier.updateMiningResponse(miningId, request.answer());
     }
 
 

@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -50,4 +51,11 @@ public class MiningRepositoryImpl implements MiningRepository {
 
         return miningMapper.toDomain(miningEntity, List.of(), tagEntities);
     }
+
+    @Override
+    public void updateMining(Long miningId, String response) {
+        miningJpaRepository.updateResponse(miningId, response);
+    }
+
+
 }
