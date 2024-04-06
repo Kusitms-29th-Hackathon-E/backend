@@ -45,7 +45,7 @@ public class MiningService {
 
     @Transactional
     public void updateMining(MiningDescriptionRequest request, Long miningId){
-        miningModifier.updateMiningResponse(miningId, request.answer());
+        miningModifier.updateMiningResponse(miningId, request.getAnswer());
     }
 
 
