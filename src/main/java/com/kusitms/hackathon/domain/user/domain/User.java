@@ -14,4 +14,8 @@ public class User {
     public static User createNewUser(String sub){
         return new User(null, sub);
     }
+
+    public static User of(Long id, String sub){
+        return new User(id, sub);
+    }
 }

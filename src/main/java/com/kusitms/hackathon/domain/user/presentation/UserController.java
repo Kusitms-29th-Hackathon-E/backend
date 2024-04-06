@@ -1,8 +1,8 @@
 package com.kusitms.hackathon.domain.user.presentation;
 
+import com.kusitms.hackathon.domain.user.application.dto.OAuthResponse;
 import com.kusitms.hackathon.domain.user.application.service.UserService;
 import com.kusitms.hackathon.domain.user.domain.Provider;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +17,7 @@ public class UserController {
 
 
     @PostMapping("/oauth/{provider}")
-    public void processingOAuth(
+    public OAuthResponse processingOAuth(
             @Parameter(description = """
                     Header: OAuth-AccessToken
                                         
@@ -30,6 +30,6 @@ public class UserController {
                     description: 소셜 로그인 플랫폼
                     """) @PathVariable Provider provider
     ) {
-        userService.oAuthExecuting(accessToken, provider);
+        return userService.oAuthExecuting(accessToken, provider);
     }
 }
