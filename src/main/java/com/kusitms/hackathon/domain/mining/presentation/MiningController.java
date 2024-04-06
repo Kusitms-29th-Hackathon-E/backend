@@ -16,7 +16,7 @@ public class MiningController {
 
     @PostMapping("/mining")
     public PlatformDetailsResponse appendMining(@RequestBody PlatformDetailsRequest request){
-        return miningService.createMining(request.platformUrl());
+        return miningService.createMining(request.getPlatformUrl());
     }
 
 
