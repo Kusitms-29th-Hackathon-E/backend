@@ -5,11 +5,12 @@ import com.kusitms.hackathon.domain.user.domain.oauth.OAuthHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import javax.sound.sampled.Port;
 import java.util.Map;
 
-@Configurable
+@Configuration
 @RequiredArgsConstructor
 public class OAuthHandlerBeanConfig {
     private final GoogleOAuthHandler googleOAuthHandler;

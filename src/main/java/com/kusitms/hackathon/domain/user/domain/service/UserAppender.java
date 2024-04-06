@@ -11,8 +11,8 @@ public class UserAppender {
     private final UserRepository userRepository;
 
 
-    public void appendUser(String email, String sub){
-        User user = User.createNewUser(email, sub);
+    public void appendUser(String sub){
+        User user = User.createNewUser( sub);
         userRepository.save(user);
     }
 }

@@ -11,9 +11,9 @@ public class UserFactory {
     private final UserRepository userRepository;
 
 
-    public User createUser(final String sub, final String email){
+    public User createUser(final String sub){
         return userRepository.findBySub(sub).orElseGet(() -> {
-            User user = User.createNewUser(email, sub);
+            User user = User.createNewUser(sub);
             return userRepository.save(user);
         });
     }
