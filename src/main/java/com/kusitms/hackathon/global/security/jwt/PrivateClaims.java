@@ -8,17 +8,9 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 public class PrivateClaims {
+
     private final TokenType tokenType;
     private final UserClaims userClaims;
-
-
-
-    public static Map<String, Class<?>> retrieveClaimsMap(){
-        return Map.of(
-                ClaimsConsts.TOKEN_TYPE, TokenType.class,
-                ClaimsConsts.USER_CLAIMS, UserClaims.class
-        );
-    }
 
     public Map<String, Object> convertClaimsMap(){
         return Map.of(
