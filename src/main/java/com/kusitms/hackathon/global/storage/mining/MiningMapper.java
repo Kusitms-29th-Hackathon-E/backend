@@ -18,7 +18,7 @@ public class MiningMapper {
         return new MiningEntity(
                 mining.getId(),
                 mining.getCreatedDate(),
-                mining.getThumbnailUrl(),
+                mining.getPlatformUrl(),
                 mining.getTitle(),
                 mining.getQuestion(),
                 mining.getResponse()
@@ -29,7 +29,7 @@ public class MiningMapper {
         return new Mining(
             miningEntity.getId(),
             miningEntity.getCreatedDate(),
-            miningEntity.getThumbnailUrl(),
+            miningEntity.getPlatformUrl(),
             miningEntity.getTitle(),
             miningEntity.getQuestion(),
             miningEntity.getResponse(),

@@ -20,7 +20,7 @@ public class MiningEntity {
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDate createdDate;
-    private String thumbnailUrl;
+    private String platformUrl;
     private String title;
     private String question;
     private String response;
