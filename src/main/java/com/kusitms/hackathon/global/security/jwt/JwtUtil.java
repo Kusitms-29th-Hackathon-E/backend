@@ -1,6 +1,8 @@
 package com.kusitms.hackathon.global.security.jwt;
 
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -12,28 +14,12 @@ import java.util.Date;
 
 @Component
 @RequiredArgsConstructor
-public class JWTUtil {
+public class JwtUtil {
+
     private final JwtProperties jwtProperties;
 
     public SecretKey generateSecretKey(){
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtProperties.getSecret()));
-    }
-
-    public Long getUserId(String token) {
-
-        return Jwts.parser().verifyWith(generateSecretKey()).build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .get("id", Long.class);
-    }
-
-    public Boolean isExpired(String token) {
-
-        return Jwts.parser().verifyWith(generateSecretKey()).build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .getExpiration()
-                .before(new Date());
     }
 
     public String createAccessToken(PrivateClaims.UserClaims userClaims){
@@ -48,5 +34,17 @@ public class JWTUtil {
                 .expiration(new Date(now.getTime() + expiredMs))
                 .signWith(generateSecretKey())
                 .compact();
+    }
+
+    //토큰이 유효한지 verifyWith로 검증하고 토큰 내용 추출
+    public Jws<Claims> parseJwt(String token) {
+        return Jwts.parser().verifyWith(generateSecretKey()).build()
+                .parseSignedClaims(token);
+    }
+
+    public PrivateClaims.UserClaims extractUserClaim(String token) {
+        return parseJwt(token)
+                .getPayload()
+                .get(ClaimsConsts.USER_CLAIMS, PrivateClaims.UserClaims.class);
     }
 }

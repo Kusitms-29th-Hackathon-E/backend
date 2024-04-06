@@ -8,6 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @RequiredArgsConstructor
 @Getter
 public class JwtProperties {
+
     private final String secret;
     private final Long accessTokenExpiredTime;
 }
