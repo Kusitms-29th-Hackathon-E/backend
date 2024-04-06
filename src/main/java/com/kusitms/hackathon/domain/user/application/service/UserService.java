@@ -21,7 +21,12 @@ public class UserService {
     public void oAuthExecuting(String accessToken, Provider provider){
         final OAuthHandler oAuthHandler = oAuthHandlerMap.get(provider);
         OAuthTransactionResult oAuthTransactionResult = oAuthHandler.retrieveOAuthDetail(new OAuthProcessingData(accessToken));
-        User user = userFactory.createUser(oAuthTransactionResult.sub(), oAuthTransactionResult.email());
+        User user = userFactory.createUser(oAuthTransactionResult.sub());
         // jwt user 정보를 통해 생성
+    }
+
+
+    public void deleteUser(){
+
     }
 }

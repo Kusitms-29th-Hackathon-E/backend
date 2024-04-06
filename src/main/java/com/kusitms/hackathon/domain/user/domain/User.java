@@ -8,11 +8,10 @@ import lombok.Getter;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class User {
     private Long id;
-    private String email;
     private String sub;
 
 
-    public static User createNewUser(String email, String sub){
-        return new User(null, email, sub);
+    public static User createNewUser(String sub){
+        return new User(null, sub);
     }
 }
