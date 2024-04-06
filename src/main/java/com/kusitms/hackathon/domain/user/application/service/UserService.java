@@ -27,11 +27,10 @@ public class UserService {
         final OAuthHandler oAuthHandler = oAuthHandlerMap.get(provider);
         OAuthTransactionResult oAuthTransactionResult = oAuthHandler.retrieveOAuthDetail(new OAuthProcessingData(accessToken));
         User user = userFactory.createUser(oAuthTransactionResult.sub());
-        // jwt user 정보를 통해 생성
-
-        // jwt 만드는데, userId를 가지고 있는 토큰을 만들어주면 됩
         return new OAuthResponse(jwtUtil.createAccessToken(new PrivateClaims.UserClaims(user.getId())));
     }
+
+
 
     public void deleteUser(){
 
