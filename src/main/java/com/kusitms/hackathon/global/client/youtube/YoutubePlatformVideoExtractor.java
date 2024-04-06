@@ -3,15 +3,19 @@ package com.kusitms.hackathon.global.client.youtube;
 import com.kusitms.hackathon.domain.mining.domain.platform.PlatformDetailResult;
 import com.kusitms.hackathon.domain.mining.domain.platform.PlatformVideoInfoExtractor;
 import com.kusitms.hackathon.domain.mining.domain.platform.PlatformVideoProcessingData;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class YoutubePlatformVideoExtractor implements PlatformVideoInfoExtractor {
@@ -22,14 +26,13 @@ public class YoutubePlatformVideoExtractor implements PlatformVideoInfoExtractor
 
     @Override
     public PlatformDetailResult extract(PlatformVideoProcessingData platformVideoProcessingData) {
-        String shortUrl = "https://youtu.be/fHlf006noFU?si=XMSsQ_b9WDJziCAb";
-        Pattern pattern = Pattern.compile("youtu\\.be\\/[a-zA-Z0-9_-]{11}");
-        Matcher matcher = pattern.matcher(shortUrl);
+        Pattern pattern = Pattern.compile("shorts\\/[a-zA-Z0-9_-]{11}");
+        Matcher matcher = pattern.matcher(platformVideoProcessingData.platformUrl());
 
         if (matcher.find()) {
             final String videoId = matcher.group(0).split("/")[1];
 
-
+            log.info("videoId: {}", videoId);
             YoutubeVideoInfo youtubeVideoInfo = webClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .queryParam("key", youtubeProperties.getApiKey())
@@ -40,30 +43,42 @@ public class YoutubePlatformVideoExtractor implements PlatformVideoInfoExtractor
                     .bodyToMono(YoutubeVideoInfo.class)
                     .block();
 
-            return new PlatformDetailResult(youtubeVideoInfo.title(), platformVideoProcessingData.platformUrl(), youtubeVideoInfo.tags());
+            return new PlatformDetailResult(youtubeVideoInfo.getTitle(), platformVideoProcessingData.platformUrl(), youtubeVideoInfo.getTags());
         }
         throw new RuntimeException("not found youtube video id");
     }
 
-    private record YoutubeVideoInfo(
-            Map<String, Object> items
-    ) {
-        public String title() {
-            return snippets().get("title").toString();
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    private static class YoutubeVideoInfo{
+        private List<Item> items;
+
+        public String getTitle(){
+            return this.items.get(0).snippet.title;
         }
 
-        public String thumbnailUrl() {
-            return ((Map<String, Object>)((Map<String, Object>)snippets().get("thumbnails")).get("high")).get("url").toString();
-        }
-
-        public List<String> tags(){
-            return (List<String>)(snippets().get("tags")==null?List.of():snippets().get("tags"));
+        public List<String> getTags(){
+            return this.items.get(0).snippet.tags;
         }
 
 
-        private Map<String, Object> snippets(){
-            return ((Map<String, Object>) ((Map<String, Object>) items.get(0)).get("snippets"));
-        }
+    }
 
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    private static class Item{
+        private Snippet snippet;
+
+
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    private static class Snippet{
+        String title;
+        List<String> tags;
     }
 }

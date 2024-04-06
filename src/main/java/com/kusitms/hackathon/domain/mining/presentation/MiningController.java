@@ -1,26 +1,20 @@
 package com.kusitms.hackathon.domain.mining.presentation;
 
-import com.kusitms.hackathon.domain.mining.domain.Mining;
-import com.kusitms.hackathon.domain.mining.domain.MiningRepository;
-import com.kusitms.hackathon.domain.mining.domain.Tag;
-import com.kusitms.hackathon.domain.mining.domain.service.MiningAppender;
+import com.kusitms.hackathon.domain.mining.application.dto.PlatformDetailsResponse;
+import com.kusitms.hackathon.domain.mining.application.service.MiningService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 public class MiningController {
 
-    private final MiningAppender miningAppender;
-    private final MiningRepository miningRepository;
+    private final MiningService miningService;
 
 
     @PostMapping("/mining")
-    public void appendMining(@RequestBody){
-
+    public PlatformDetailsResponse appendMining(@RequestBody String platformUrl){
+        return miningService.createMining(platformUrl);
     }
 
 }
