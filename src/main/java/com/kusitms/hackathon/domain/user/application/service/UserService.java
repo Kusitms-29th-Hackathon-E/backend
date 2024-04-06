@@ -1,5 +1,6 @@
 package com.kusitms.hackathon.domain.user.application.service;
 
+import com.kusitms.hackathon.domain.user.application.dto.OAuthResponse;
 import com.kusitms.hackathon.domain.user.domain.Provider;
 import com.kusitms.hackathon.domain.user.domain.User;
 import com.kusitms.hackathon.domain.user.domain.oauth.OAuthHandler;
@@ -21,14 +22,14 @@ public class UserService {
     private final UserFactory userFactory;
     private final JWTUtil jwtUtil;
 
-    public void oAuthExecuting(String accessToken, Provider provider){
+    public OAuthResponse oAuthExecuting(String accessToken, Provider provider){
         final OAuthHandler oAuthHandler = oAuthHandlerMap.get(provider);
         OAuthTransactionResult oAuthTransactionResult = oAuthHandler.retrieveOAuthDetail(new OAuthProcessingData(accessToken));
         User user = userFactory.createUser(oAuthTransactionResult.sub());
         // jwt user 정보를 통해 생성
 
         // jwt 만드는데, userId를 가지고 있는 토큰을 만들어주면 됩
-        jwtUtil.createAccessToken(new PrivateClaims.UserClaims(user.getId()));
+        return new OAuthResponse(jwtUtil.createAccessToken(new PrivateClaims.UserClaims(user.getId())));
     }
 
 
