@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 public class MiningAppender {
     private final MiningRepository miningRepository;
 
-    public void appendMining(Mining mining){
-        miningRepository.save(mining);
+    public Long appendMiningAndGetId(Mining mining){
+        return miningRepository.save(mining).getId();
     }
 
 }
