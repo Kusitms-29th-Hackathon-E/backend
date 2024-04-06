@@ -1,6 +1,7 @@
 package com.kusitms.hackathon.domain.mining.presentation;
 
 import com.kusitms.hackathon.domain.mining.application.dto.MiningDescriptionRequest;
+import com.kusitms.hackathon.domain.mining.application.dto.PlatformDetailsRequest;
 import com.kusitms.hackathon.domain.mining.application.dto.PlatformDetailsResponse;
 import com.kusitms.hackathon.domain.mining.application.service.MiningService;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +15,8 @@ public class MiningController {
 
 
     @PostMapping("/mining")
-    public PlatformDetailsResponse appendMining(@RequestBody String platformUrl){
-        return miningService.createMining(platformUrl);
+    public PlatformDetailsResponse appendMining(@RequestBody PlatformDetailsRequest request){
+        return miningService.createMining(request.platformUrl());
     }
 
 
